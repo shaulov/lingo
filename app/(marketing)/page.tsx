@@ -1,5 +1,15 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
+import {
+  ClerkLoading,
+  ClerkLoaded,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+} from "@clerk/nextjs";
+import { Loader } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function MarketingPage() {
   return (
@@ -13,20 +23,52 @@ export default function MarketingPage() {
           <h2 className="max-w-[480px] mb-5 text-center text-xl lg:text-3xl font-bold text-neutral-600">
             Learn, practice, and master new languages with Lingo.
           </h2>
-          <Button
-            className="justify-self-center w-full max-w-[330px]"
-            variant="secondary"
-            size="lg"
-          >
-            Get started
-          </Button>
-          <Button
-            className="justify-self-center w-full max-w-[330px]"
-            variant="primaryOutline"
-            size="lg"
-          >
-            I already have an account
-          </Button>
+          <ClerkLoading>
+            <div className="flex justify-center items-center px-8">
+              <span className="sr-only">Loading...</span>
+              <Loader className="h-5 w-5 text-muted-foreground animate-spin" />
+            </div>
+          </ClerkLoading>
+          <ClerkLoaded>
+            <SignedIn>
+              <Button
+                className="justify-self-center w-full max-w-[330px]"
+                size="lg"
+                variant="secondary"
+                asChild
+              >
+                <Link href="/learn">Continue Learning</Link>
+              </Button>
+            </SignedIn>
+            <SignedOut>
+              <SignUpButton
+                mode="modal"
+                afterSignInUrl="/learn"
+                afterSignUpUrl="/learn"
+              >
+                <Button
+                  className="justify-self-center w-full max-w-[330px]"
+                  variant="secondary"
+                  size="lg"
+                >
+                  Get started
+                </Button>
+              </SignUpButton>
+              <SignInButton
+                mode="modal"
+                afterSignInUrl="/learn"
+                afterSignUpUrl="/learn"
+              >
+                <Button
+                  className="justify-self-center w-full max-w-[330px]"
+                  variant="primaryOutline"
+                  size="lg"
+                >
+                  I already have an account
+                </Button>
+              </SignInButton>
+            </SignedOut>
+          </ClerkLoaded>
         </div>
       </section>
     </main>

@@ -1,6 +1,15 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { Loader } from "lucide-react";
+import {
+  ClerkLoading,
+  ClerkLoaded,
+  UserButton,
+  SignedIn,
+  SignInButton,
+  SignedOut,
+} from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 function Header() {
   return (
@@ -11,9 +20,28 @@ function Header() {
           Lingo
         </span>
       </Link>
-      <Button variant="ghost" size="lg">
-        Login
-      </Button>
+      <ClerkLoading>
+        <div className="px-8">
+          <span className="sr-only">Loading...</span>
+          <Loader className="h-5 w-5 text-muted-foreground animate-spin" />
+        </div>
+      </ClerkLoading>
+      <ClerkLoaded>
+        <SignedIn>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
+        <SignedOut>
+          <SignInButton
+            mode="modal"
+            afterSignInUrl="/learn"
+            afterSignUpUrl="/learn"
+          >
+            <Button variant="ghost" size="lg">
+              Login
+            </Button>
+          </SignInButton>
+        </SignedOut>
+      </ClerkLoaded>
     </header>
   );
 }
