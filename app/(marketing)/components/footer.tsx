@@ -1,6 +1,6 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { LANGUAGES } from "@/const";
-import Image from "next/image";
 
 function Footer() {
   return (
