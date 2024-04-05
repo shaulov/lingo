@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Loader } from "lucide-react";
 import {
   ClerkLoading,
   ClerkLoaded,
@@ -9,6 +8,7 @@ import {
   SignInButton,
   SignedOut,
 } from "@clerk/nextjs";
+import { Loader } from "@/components/loader";
 import { Button } from "@/components/ui/button";
 
 function Header() {
@@ -21,10 +21,7 @@ function Header() {
         </span>
       </Link>
       <ClerkLoading>
-        <div className="px-8">
-          <span className="sr-only">Loading...</span>
-          <Loader className="h-5 w-5 text-muted-foreground animate-spin" />
-        </div>
+        <Loader className="px-8" />
       </ClerkLoading>
       <ClerkLoaded>
         <SignedIn>

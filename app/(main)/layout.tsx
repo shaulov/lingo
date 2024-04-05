@@ -9,8 +9,8 @@ export default function MainLayout({
   return (
     <>
       <MobileHeader />
-      <Sidebar className="hidden lg:grid" />
-      <main className="h-full pt-[50px] lg:pt-0 lg:pl-[256px] bg-red-500">
+      <Sidebar className="hidden lg:flex" />
+      <main className="h-full pt-[50px] lg:pt-0 lg:pl-[256px]">
         {children}
       </main>
     </>
