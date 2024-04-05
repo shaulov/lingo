@@ -8,8 +8,8 @@ import {
   SignInButton,
   SignUpButton,
 } from "@clerk/nextjs";
-import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Loader } from "@/components/loader";
 
 export default function MarketingPage() {
   return (
@@ -24,10 +24,7 @@ export default function MarketingPage() {
             Learn, practice, and master new languages with Lingo.
           </h2>
           <ClerkLoading>
-            <div className="flex justify-center items-center px-8">
-              <span className="sr-only">Loading...</span>
-              <Loader className="h-5 w-5 text-muted-foreground animate-spin" />
-            </div>
+            <Loader />
           </ClerkLoading>
           <ClerkLoaded>
             <SignedIn>
