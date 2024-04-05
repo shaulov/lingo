@@ -18,7 +18,10 @@ function Sidebar({ className }: SidebarProps) {
         className,
       )}
     >
-      <Link className="self-start flex items-center gap-x-3 pt-8 pl-4 pb-7" href="/learn">
+      <Link
+        className="self-start flex items-center gap-x-3 pt-8 pl-4 pb-7"
+        href="/learn"
+      >
         <Image src="/images/mascot.svg" width="40" height="40" alt="Logo" />
         <span className="text-2xl font-extrabold text-green-600 tracking-wide">
           Lingo
@@ -40,9 +43,14 @@ function Sidebar({ className }: SidebarProps) {
           <Loader className="justify-start p-2" />
         </ClerkLoading>
         <ClerkLoaded>
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                userButtonPopoverCard: { pointerEvents: "initial" },
+              },
+            }}
+          />
         </ClerkLoaded>
       </div>
     </nav>
