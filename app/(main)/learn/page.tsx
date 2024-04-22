@@ -6,6 +6,7 @@ import { Header } from "./components/header";
 export default function LearnPage() {
   return (
     <section className="flex gap-[48px] px-6">
+      <h1 className="sr-only">Spanish course</h1>
       <FeedWrapper>
         <Header title="Spanish" />
         <div className="h-[1999px]"></div>
