@@ -1,3 +1,8 @@
+export enum AppRoutes {
+	Courses = '/courses',
+	Learn = '/learn',
+};
+
 export const LANGUAGES = [
 	{ id: 'croatian', name: 'Croatian', src: '/images/flags/hr.svg' },
 	{ id: 'spanish', name: 'Spanish', src: '/images/flags/es.svg' },
