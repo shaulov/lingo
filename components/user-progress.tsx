@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
+import { courses } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import { InfinityIcon } from "lucide-react";
 
 type UserProgressProps = {
-  activeCourse: Record<string, string>; //TODO: change on DB type
+  activeCourse: typeof courses.$inferSelect;
   hearts: number;
   points: number;
   hasActiveSubscription: boolean;
@@ -21,7 +22,7 @@ function UserProgress({
       <Button variant="ghost" asChild>
         <Link href="/courses">
           <Image
-            src={activeCourse.imgSrc}
+            src={activeCourse.imageSrc}
             width="32"
             height="32"
             alt={activeCourse.title}
