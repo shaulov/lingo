@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getUserProgress } from "@/db/queries";
+import { getUnits, getUserProgress } from "@/db/queries";
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { UserProgress } from "@/components/user-progress";
@@ -7,7 +7,18 @@ import { Header } from "./components/header";
 import { AppRoutes } from "@/const";
 
 export default async function LearnPage() {
-  const userProgress = await getUserProgress();
+  const userProgressData = getUserProgress();
+  const unitsData = getUnits();
+
+  const [
+    userProgress,
+    units,
+  ] = await Promise.all([
+    userProgressData,
+    unitsData,
+  ]);
+
+  console.log(units);
 
   if (!userProgress || !userProgress.activeCourse) {
     redirect(AppRoutes.Courses);
@@ -18,6 +29,13 @@ export default async function LearnPage() {
       <h1 className="sr-only">Spanish course</h1>
       <FeedWrapper>
         <Header title={userProgress.activeCourse.title} />
+        <ul>
+          {units.map(unit => (
+            <li key={unit.id} className="mb-10">
+              {JSON.stringify(unit)}
+            </li>
+          ))}
+        </ul>
         <div className="h-[1999px]"></div>
       </FeedWrapper>
       <StickyWrapper>
