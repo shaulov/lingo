@@ -37,3 +37,6 @@ export const SidebarItems = [
 		href: '/shop',
 	},
 ];
+
+export const CYCLE_LENGTH = 8;
+export const RIGHT_INDENT_CONST = 40;

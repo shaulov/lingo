@@ -4,6 +4,7 @@ import { FeedWrapper } from "@/components/feed-wrapper";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { UserProgress } from "@/components/user-progress";
 import { Header } from "./components/header";
+import { Unit } from "./components/unit";
 import { AppRoutes } from "@/const";
 
 export default async function LearnPage() {
@@ -18,8 +19,6 @@ export default async function LearnPage() {
     unitsData,
   ]);
 
-  console.log(units);
-
   if (!userProgress || !userProgress.activeCourse) {
     redirect(AppRoutes.Courses);
   }
@@ -32,7 +31,15 @@ export default async function LearnPage() {
         <ul>
           {units.map(unit => (
             <li key={unit.id} className="mb-10">
-              {JSON.stringify(unit)}
+              <Unit
+                id={unit.id}
+                order={unit.order}
+                title={unit.title}
+                description={unit.description}
+                lessons={unit.lessons}
+                activeLesson={undefined}
+                activeLessonPercentage={0}
+              />
             </li>
           ))}
         </ul>
