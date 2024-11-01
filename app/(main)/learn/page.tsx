@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getUnits, getUserProgress } from "@/db/queries";
+import { getUnits, getUserProgress, getCourseProgress, getLessonPercentage } from "@/db/queries";
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { UserProgress } from "@/components/user-progress";
@@ -9,17 +9,23 @@ import { AppRoutes } from "@/const";
 
 export default async function LearnPage() {
   const userProgressData = getUserProgress();
+  const courseProgressData = getCourseProgress();
+  const lessonPercentageData = getLessonPercentage();
   const unitsData = getUnits();
 
   const [
     userProgress,
+    courseProgress,
+    lessonPercentage,
     units,
   ] = await Promise.all([
     userProgressData,
+    courseProgressData,
+    lessonPercentageData,
     unitsData,
   ]);
 
-  if (!userProgress || !userProgress.activeCourse) {
+  if (!userProgress || !userProgress.activeCourse || !courseProgress) {
     redirect(AppRoutes.Courses);
   }
 
@@ -37,8 +43,8 @@ export default async function LearnPage() {
                 title={unit.title}
                 description={unit.description}
                 lessons={unit.lessons}
-                activeLesson={undefined}
-                activeLessonPercentage={0}
+                activeLesson={courseProgress.activeLesson}
+                activeLessonPercentage={lessonPercentage}
               />
             </li>
           ))}
