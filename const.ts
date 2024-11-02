@@ -1,7 +1,7 @@
 export enum AppRoutes {
 	Courses = '/courses',
 	Learn = '/learn',
-};
+}
 
 export const LANGUAGES = [
 	{ id: 'croatian', name: 'Croatian', src: '/images/flags/hr.svg' },

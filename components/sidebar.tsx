@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ClerkLoading, ClerkLoaded, SignedIn, UserButton } from "@clerk/nextjs";
+import { ClerkLoading, ClerkLoaded, UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { Loader } from "@/components/loader";
 import { SidebarItem } from "@/components/sidebar-item";
