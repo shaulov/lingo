@@ -40,3 +40,8 @@ export const SidebarItems = [
 
 export const CYCLE_LENGTH = 8;
 export const RIGHT_INDENT_CONST = 40;
+
+export enum ChallengeTypes {
+	Assist = 'ASSIST',
+	Select = 'SELECT',
+}
