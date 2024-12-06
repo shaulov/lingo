@@ -4,7 +4,7 @@ type Props = {
     question: string;
 }
 
-function QuestionBubble({ question }: Props) {
+export function QuestionBubble({ question }: Props) {
     return (
         <article className="flex items-center gap-x-4 mb-6">
             <Image
@@ -28,5 +28,3 @@ function QuestionBubble({ question }: Props) {
         </article>
     );
 }
-
-export { QuestionBubble };

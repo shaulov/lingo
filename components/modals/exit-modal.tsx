@@ -32,7 +32,7 @@ export function ExitModal() {
                 <DialogHeader className="flex items-center">
                     <Image
                         className="mb-5 text-center rounded"
-                        src="/images/mascot_sad.webp"
+                        src="/images/mascot_sad.svg"
                         height={80}
                         width={80}
                         alt="Sad face mascot"
