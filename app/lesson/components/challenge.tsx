@@ -2,10 +2,11 @@ import {challengeOptions, challenges} from "@/db/schema";
 import {cn} from "@/lib/utils";
 import {Card} from "./card";
 import {ChallengeTypes} from "@/const";
+import {QuizStatus} from "@/types";
 
 type Props = {
     options: typeof challengeOptions.$inferSelect[];
-    status: "correct" | "wrong" | "none";
+    status: QuizStatus;
     selectedOption?: number;
     type: typeof challenges.$inferSelect["type"];
     disabled?: boolean;

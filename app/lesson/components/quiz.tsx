@@ -2,10 +2,12 @@
 
 import {useState} from "react";
 import {challengeOptions, challenges} from "@/db/schema";
-import {Header} from "@/app/lesson/components/header";
-import {QuestionBubble} from "@/app/lesson/components/question-bubble";
-import {Challenge} from "@/app/lesson/components/challenge";
+import {Header} from "./header";
+import {QuestionBubble} from "./question-bubble";
+import {Challenge} from "./challenge";
+import {Footer} from "./footer";
 import {ChallengeTypes} from "@/const";
+import {QuizStatus} from "@/types";
 
 type Props = {
     initialLessonId: number;
@@ -31,10 +33,18 @@ export function Quiz({
         const uncompletedIndex = challenges.findIndex(challenge => !challenge.completed);
         return uncompletedIndex === -1 ? 0 : uncompletedIndex;
     });
+    const [selectedOption, setSelectedOption] = useState<number | undefined>();
+    const [status, setStatus] = useState<QuizStatus>("none");
 
     const challenge = challenges[activeIndex];
     const options = challenge.challengeOptions ?? [];
     const title = challenge.type === ChallengeTypes.Assist ? "Select the correct meaning" : challenge.question;
+
+    const handleSelect = (id: number) => {
+        if (status !== "none") return;
+
+        setSelectedOption(id);
+    }
 
     return (
         <>
@@ -55,16 +65,21 @@ export function Quiz({
                             )}
                             <Challenge
                                 options={options}
-                                status="none"
-                                selectedOption={undefined}
+                                status={status}
+                                selectedOption={selectedOption}
                                 type={challenge.type}
                                 disabled={false}
-                                onSelect={() => {}}
+                                onSelect={handleSelect}
                             />
                         </div>
                     </div>
                 </section>
             </main>
+            <Footer
+                status={status}
+                disable={!selectedOption}
+                onCheck={() => {}}
+            />
         </>
     );
 }

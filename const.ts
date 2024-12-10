@@ -1,6 +1,7 @@
 export enum AppRoutes {
 	Courses = '/courses',
 	Learn = '/learn',
+	Lesson = '/lesson',
 }
 
 export const LANGUAGES = [

@@ -1,7 +1,10 @@
+import {useCallback} from "react";
 import Image from "next/image";
+import {useAudio, useKey} from "react-use";
 import {cn} from "@/lib/utils";
 import {challenges} from "@/db/schema";
 import {ChallengeTypes} from "@/const";
+import {QuizStatus} from "@/types";
 
 type Props = {
     id: number;
@@ -11,7 +14,7 @@ type Props = {
     shortcut: string;
     selected?: boolean;
     disabled?: boolean;
-    status?: "correct" | "wrong" | "none";
+    status?: QuizStatus;
     type: typeof challenges.$inferSelect["type"];
     onClick: () => void;
 }
@@ -28,15 +31,30 @@ export function Card({
     type,
     onClick,
 }: Props) {
+    const [audio, _, controls] = useAudio({ src: audioSrc ?? "" });
+
+    const handleClick = useCallback(() => {
+        if (disabled) return;
+
+        controls.play();
+        onClick();
+    }, [controls, disabled, onClick]);
+
+    useKey(shortcut, handleClick, {}, [handleClick]);
+
     return (
-        <button className={cn(
-            "h-full w-full p-4 lg:p-6 border-2 border-b-4 active:border-b-2 rounded-xl hover:bg-black/5",
-            selected && "bg-sky-100 border-sky-300 hover:bg-sky-100",
-            selected && status === "correct" && "bg-green-100 border-green-300 hover:bg-green-100",
-            selected && status === "wrong" && "bg-rose-100 border-rose-300 hover:bg-rose-100",
-            disabled && "pointer-events-none hover:bg-white",
-            type === ChallengeTypes.Assist && "w-full lg:p-3",
-        )}>
+        <button
+            className={cn(
+                "h-full w-full p-4 lg:p-6 border-2 border-b-4 active:border-b-2 rounded-xl hover:bg-black/5",
+                selected && "bg-sky-100 border-sky-300 hover:bg-sky-100",
+                selected && status === "correct" && "bg-green-100 border-green-300 hover:bg-green-100",
+                selected && status === "wrong" && "bg-rose-100 border-rose-300 hover:bg-rose-100",
+                disabled && "pointer-events-none hover:bg-white",
+                type === ChallengeTypes.Assist && "w-full lg:p-3",
+            )}
+            onClick={handleClick}
+        >
+            {audio}
             {imageSrc && (
                 <div className="relative aspect-square w-full max-h-[80px] lg:max-h-[150px] mb-4">
                     <Image src={imageSrc} fill alt={text} />
