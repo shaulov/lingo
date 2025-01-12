@@ -59,4 +59,5 @@ export enum QuizStatuses {
 	Correct = 'correct',
 	None = 'none',
 	Wrong = 'wrong',
+	Completed = 'completed',
 }
