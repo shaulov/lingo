@@ -2,6 +2,8 @@ export enum AppRoutes {
 	Courses = '/courses',
 	Learn = '/learn',
 	Lesson = '/lesson',
+	Quests = '/quests',
+	Leaderboard = '/leaderboard',
 }
 
 export const LANGUAGES = [
@@ -39,10 +41,22 @@ export const SidebarItems = [
 	},
 ];
 
+export const DEFAULT_HEART_COUNT = 5;
+export const DEFAULT_ADDING_POINTS = 10;
 export const CYCLE_LENGTH = 8;
 export const RIGHT_INDENT_CONST = 40;
 
 export enum ChallengeTypes {
 	Assist = 'ASSIST',
 	Select = 'SELECT',
+}
+
+export enum ErrorMessages {
+	Hearts = 'Hearts',
+}
+
+export enum QuizStatuses {
+	Correct = 'correct',
+	None = 'none',
+	Wrong = 'wrong',
 }

@@ -1,12 +1,14 @@
 "use client";
 
-import {useState} from "react";
+import {useState, useTransition} from "react";
+import {toast} from "sonner";
 import {challengeOptions, challenges} from "@/db/schema";
+import {upsertChallengeProgress} from "@/actions/challenge-progress";
 import {Header} from "./header";
 import {QuestionBubble} from "./question-bubble";
 import {Challenge} from "./challenge";
 import {Footer} from "./footer";
-import {ChallengeTypes} from "@/const";
+import {ChallengeTypes, DEFAULT_HEART_COUNT, ErrorMessages, QuizStatuses} from "@/const";
 import {QuizStatus} from "@/types";
 
 type Props = {
@@ -27,6 +29,8 @@ export function Quiz({
     initialPercentage,
     userSubscription,
 }: Props) {
+    const [isPending, startTransition] = useTransition();
+
     const [hearts, setHearts] = useState(initialHearts);
     const [percentage, setPercentage] = useState(initialPercentage);
     const [activeIndex, setActiveIndex] = useState(() => {
@@ -34,17 +38,63 @@ export function Quiz({
         return uncompletedIndex === -1 ? 0 : uncompletedIndex;
     });
     const [selectedOption, setSelectedOption] = useState<number | undefined>();
-    const [status, setStatus] = useState<QuizStatus>("none");
+    const [status, setStatus] = useState<QuizStatus>(QuizStatuses.None);
 
     const challenge = challenges[activeIndex];
     const options = challenge.challengeOptions ?? [];
     const title = challenge.type === ChallengeTypes.Assist ? "Select the correct meaning" : challenge.question;
 
+    const handleNext = () => {
+        setActiveIndex(current => current + 1);
+    };
+
     const handleSelect = (id: number) => {
-        if (status !== "none") return;
+        if (status !== QuizStatuses.None) return;
 
         setSelectedOption(id);
-    }
+    };
+
+    const handleContinue = () => {
+        if (!selectedOption) return;
+
+        if (status === QuizStatuses.Wrong) {
+            setStatus(QuizStatuses.None);
+            setSelectedOption(undefined);
+        }
+
+        if (status === QuizStatuses.Correct) {
+            handleNext();
+            setStatus(QuizStatuses.None);
+            setSelectedOption(undefined);
+            return;
+        }
+
+        const correctOption = options.find(option => option.correct);
+
+        if (!correctOption) return;
+
+        if (correctOption.id === selectedOption) {
+            startTransition(() => {
+                upsertChallengeProgress(challenge.id)
+                    .then(response => {
+                        if (response?.error === ErrorMessages.Hearts) {
+                            console.error("Missing hearts");
+                            return;
+                        }
+
+                        setStatus(QuizStatuses.Correct);
+                        setPercentage(prev => prev + 100 / challenges.length);
+
+                        if (initialPercentage === 100) {
+                            setHearts(prev => Math.min(prev + 1, DEFAULT_HEART_COUNT));
+                        }
+                    })
+                    .catch((error) => {
+                        toast.error("Something went wrong. Please try again.");
+                    });
+            })
+        }
+    };
 
     return (
         <>
@@ -78,7 +128,7 @@ export function Quiz({
             <Footer
                 status={status}
                 disable={!selectedOption}
-                onCheck={() => {}}
+                onCheck={handleContinue}
             />
         </>
     );

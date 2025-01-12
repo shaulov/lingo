@@ -16,6 +16,7 @@ const main = async () => {
     await db.delete(schema.challenges);
     await db.delete(schema.challengeOptions);
     await db.delete(schema.challengeProgress);
+    await db.delete(schema.challengeProgress);
 
     await db.insert(schema.courses).values([
       { id: 1, title: "Spanish", imageSrc: '/images/flags/es.svg' },
@@ -49,7 +50,7 @@ const main = async () => {
     await db.insert(schema.challengeOptions).values([
       {
         id: 1,
-        challegeId: 1,
+        challengeId: 1,
         correct: true,
         imageSrc: "images/lessons/man.svg",
         text: "el hombre",
@@ -57,7 +58,7 @@ const main = async () => {
       },
       {
         id: 2,
-        challegeId: 1,
+        challengeId: 1,
         correct: false,
         imageSrc: "images/lessons/woman.svg",
         text: "la mujer",
@@ -65,7 +66,7 @@ const main = async () => {
       },
       {
         id: 3,
-        challegeId: 1,
+        challengeId: 1,
         correct: false,
         imageSrc: "images/lessons/robot.svg",
         text: "el robot",

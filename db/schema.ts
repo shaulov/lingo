@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, serial, text, integer, boolean, pgEnum } from "drizzle-orm/pg-core";
+import { DEFAULT_HEART_COUNT } from "@/const";
 
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
@@ -64,7 +65,7 @@ export const challengesRelations = relations(challenges, ({ one, many }) => ({
 
 export const challengeOptions = pgTable("challenge_options", {
   id: serial("id").primaryKey(),
-  challegeId: integer("challenge_id").references(() => challenges.id, { onDelete: "cascade" }).notNull(),
+  challengeId: integer("challenge_id").references(() => challenges.id, { onDelete: "cascade" }).notNull(),
   text: text("text").notNull(),
   correct: boolean("correct").notNull(),
   imageSrc: text("image_src"),
@@ -72,8 +73,8 @@ export const challengeOptions = pgTable("challenge_options", {
 });
 
 export const challengeOptionsRelations = relations(challengeOptions, ({ one }) => ({
-  chellenge: one(challenges, {
-    fields: [challengeOptions.challegeId],
+  challenge: one(challenges, {
+    fields: [challengeOptions.challengeId],
     references: [challenges.id],
   }),
 }));
@@ -81,13 +82,13 @@ export const challengeOptionsRelations = relations(challengeOptions, ({ one }) =
 export const challengeProgress = pgTable("challenge_progress", {
   id: serial("id").primaryKey(),
   userId: text("user_id").notNull(),
-  challegeId: integer("challenge_id").references(() => challenges.id, { onDelete: "cascade" }).notNull(),
+  challengeId: integer("challenge_id").references(() => challenges.id, { onDelete: "cascade" }).notNull(),
   completed: boolean("completed").notNull().default(false),
 });
 
 export const challengeProgressRelations = relations(challengeProgress, ({ one }) => ({
-  chellenge: one(challenges, {
-    fields: [challengeProgress.challegeId],
+  challenge: one(challenges, {
+    fields: [challengeProgress.challengeId],
     references: [challenges.id],
   }),
 }));
@@ -97,7 +98,7 @@ export const userProgress = pgTable("user_progress", {
   userName: text("user_name").notNull().default("User"),
   userImageSrc: text("user_image_src").notNull().default("/mascot.svg"),
   activeCourseId: integer("active_course_id").references(() => courses.id, { onDelete: "cascade" }).notNull(),
-  hearts: integer("hearts").notNull().default(5),
+  hearts: integer("hearts").notNull().default(DEFAULT_HEART_COUNT),
   points: integer("points").notNull().default(0),
 });
 
