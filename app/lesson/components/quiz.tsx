@@ -4,6 +4,7 @@ import {useState, useTransition} from "react";
 import {toast} from "sonner";
 import {challengeOptions, challenges} from "@/db/schema";
 import {upsertChallengeProgress} from "@/actions/challenge-progress";
+import {reduceHearts} from "@/actions/user-progress";
 import {Header} from "./header";
 import {QuestionBubble} from "./question-bubble";
 import {Challenge} from "./challenge";
@@ -55,17 +56,21 @@ export function Quiz({
     };
 
     const handleContinue = () => {
-        if (!selectedOption) return;
+        if (isPending || !selectedOption) return;
 
         if (status === QuizStatuses.Wrong) {
             setStatus(QuizStatuses.None);
             setSelectedOption(undefined);
+            return;
         }
 
         if (status === QuizStatuses.Correct) {
-            handleNext();
-            setStatus(QuizStatuses.None);
-            setSelectedOption(undefined);
+            startTransition(() => {
+                handleNext();
+                setStatus(QuizStatuses.None);
+                setSelectedOption(undefined);
+            });
+
             return;
         }
 
@@ -89,10 +94,29 @@ export function Quiz({
                             setHearts(prev => Math.min(prev + 1, DEFAULT_HEART_COUNT));
                         }
                     })
-                    .catch((error) => {
+                    .catch(() => {
                         toast.error("Something went wrong. Please try again.");
                     });
-            })
+            });
+        } else {
+            startTransition(() => {
+               reduceHearts(challenge.id)
+                   .then(response => {
+                       if (response?.error === ErrorMessages.Hearts) {
+                           console.error("Missing hearts");
+                           return;
+                       }
+
+                       setStatus(QuizStatuses.Wrong);
+
+                       if (!response?.error) {
+                           setHearts(prev => Math.max(prev - 1, 0));
+                       }
+                   })
+                   .catch(() => {
+                       toast.error("Something went wrong. Please try again.");
+                   });
+            });
         }
     };
 
@@ -118,7 +142,7 @@ export function Quiz({
                                 status={status}
                                 selectedOption={selectedOption}
                                 type={challenge.type}
-                                disabled={false}
+                                disabled={isPending}
                                 onSelect={handleSelect}
                             />
                         </div>
@@ -127,7 +151,7 @@ export function Quiz({
             </main>
             <Footer
                 status={status}
-                disable={!selectedOption}
+                disable={isPending || !selectedOption}
                 onCheck={handleContinue}
             />
         </>

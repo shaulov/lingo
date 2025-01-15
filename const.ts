@@ -4,6 +4,7 @@ export enum AppRoutes {
 	Lesson = '/lesson',
 	Quests = '/quests',
 	Leaderboard = '/leaderboard',
+	Shop = '/shop',
 }
 
 export const LANGUAGES = [
@@ -52,7 +53,8 @@ export enum ChallengeTypes {
 }
 
 export enum ErrorMessages {
-	Hearts = 'Hearts',
+	Hearts = 'hearts',
+	Practice = 'practice',
 }
 
 export enum QuizStatuses {
