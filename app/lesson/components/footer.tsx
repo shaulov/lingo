@@ -9,7 +9,7 @@ import {FooterStatus} from "@/types";
 type Props = {
     status: FooterStatus;
     disable?: boolean;
-    lessonId?: string;
+    lessonId?: number;
     onCheck: () => void;
 }
 

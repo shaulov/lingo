@@ -1,6 +1,7 @@
 "use client";
 
-import {useState, useTransition} from "react";
+import {useState, useTransition, useRef} from "react";
+import {useRouter} from "next/navigation";
 import {toast} from "sonner";
 import {challengeOptions, challenges} from "@/db/schema";
 import {upsertChallengeProgress} from "@/actions/challenge-progress";
@@ -8,8 +9,16 @@ import {reduceHearts} from "@/actions/user-progress";
 import {Header} from "./header";
 import {QuestionBubble} from "./question-bubble";
 import {Challenge} from "./challenge";
+import {FinishQuiz} from "@/app/lesson/components/finish-quiz";
 import {Footer} from "./footer";
-import {ChallengeTypes, DEFAULT_HEART_COUNT, ErrorMessages, QuizStatuses} from "@/const";
+import {
+    ChallengeTypes,
+    DEFAULT_HEART_COUNT,
+    DEFAULT_ADDING_POINTS,
+    ErrorMessages,
+    QuizStatuses,
+    AppRoutes
+} from "@/const";
 import {QuizStatus} from "@/types";
 
 type Props = {
@@ -30,6 +39,10 @@ export function Quiz({
     initialPercentage,
     userSubscription,
 }: Props) {
+    const router = useRouter();
+
+    const correctAudioRef = useRef<HTMLAudioElement | null>(null);
+    const incorrectAudioRef = useRef<HTMLAudioElement | null>(null);
     const [isPending, startTransition] = useTransition();
 
     const [hearts, setHearts] = useState(initialHearts);
@@ -42,8 +55,11 @@ export function Quiz({
     const [status, setStatus] = useState<QuizStatus>(QuizStatuses.None);
 
     const challenge = challenges[activeIndex];
-    const options = challenge.challengeOptions ?? [];
-    const title = challenge.type === ChallengeTypes.Assist ? "Select the correct meaning" : challenge.question;
+    const options = challenge?.challengeOptions ?? [];
+    const title = challenge?.type === ChallengeTypes.Assist ? "Select the correct meaning" : challenge?.question;
+    const score = challenges.length * DEFAULT_ADDING_POINTS;
+
+    console.log(challenge);
 
     const handleNext = () => {
         setActiveIndex(current => current + 1);
@@ -87,6 +103,10 @@ export function Quiz({
                             return;
                         }
 
+                        if (correctAudioRef.current) {
+                            correctAudioRef.current.play();
+                        }
+
                         setStatus(QuizStatuses.Correct);
                         setPercentage(prev => prev + 100 / challenges.length);
 
@@ -107,6 +127,10 @@ export function Quiz({
                            return;
                        }
 
+                       if (incorrectAudioRef.current) {
+                           incorrectAudioRef.current.play();
+                       }
+
                        setStatus(QuizStatuses.Wrong);
 
                        if (!response?.error) {
@@ -120,8 +144,27 @@ export function Quiz({
         }
     };
 
+    const handleFinishCheck = () => {
+        router.push(AppRoutes.Learn);
+    }
+
+    if (!challenge) {
+        return (
+            <>
+                <FinishQuiz score={score} hearts={hearts} />
+                <Footer
+                    lessonId={initialLessonId}
+                    status={QuizStatuses.Completed}
+                    onCheck={handleFinishCheck}
+                />
+            </>
+        );
+    }
+
     return (
         <>
+            <audio ref={correctAudioRef} src="/sounds/correct.wav"/>
+            <audio ref={incorrectAudioRef} src="/sounds/incorrect.wav"/>
             <Header
                 hearts={hearts}
                 percentage={percentage}
@@ -135,7 +178,7 @@ export function Quiz({
                         </h1>
                         <div>
                             {challenge.type === ChallengeTypes.Assist && (
-                                <QuestionBubble question={challenge.question} />
+                                <QuestionBubble question={challenge.question}/>
                             )}
                             <Challenge
                                 options={options}
