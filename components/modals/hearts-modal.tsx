@@ -3,7 +3,7 @@
 import {useCallback, useEffect, useState} from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import {useExitModal} from "@/hooks/use-exit-modal";
+import {useHeartsModal} from "@/hooks/use-hearts-modal";
 import {
     Dialog,
     DialogContent,
@@ -15,15 +15,15 @@ import {
 import { Button } from "@/components/ui/button";
 import {AppRoutes} from "@/const";
 
-export function ExitModal() {
+export function HeartsModal() {
     const router = useRouter();
     const [isClient, setIsClient] = useState(false);
-    const { isOpen, close } = useExitModal();
+    const { isOpen, close } = useHeartsModal();
 
     useEffect(() => setIsClient(true), []);
 
     const handleClick = useCallback(() => {
-        router.push(AppRoutes.Learn);
+        router.push(AppRoutes.Shop);
         close();
     }, [router, close]);
 
@@ -37,14 +37,14 @@ export function ExitModal() {
                 <DialogHeader className="flex items-center">
                     <Image
                         className="mb-5 text-center rounded"
-                        src="/images/mascot_sad.svg"
+                        src="/images/mascot_bad.svg"
                         height={80}
                         width={80}
                         alt="Sad face mascot"
                     />
-                    <DialogTitle className="font-bold text-2xl">Wait, don&apos;t go!</DialogTitle>
-                    <DialogDescription className="text-base">
-                        You&apos;re about to leave the lesson. Are you sure?
+                    <DialogTitle className="font-bold text-2xl">You ran out of hearts!</DialogTitle>
+                    <DialogDescription className="text-base text-center">
+                        Get Pro for unlimited hearts, or purchase them in the store.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="flex flex-col flex-wrap items-center gap-4">
@@ -52,17 +52,17 @@ export function ExitModal() {
                         className="w-full"
                         variant="primary"
                         size="lg"
-                        onClick={close}
+                        onClick={handleClick}
                     >
-                        Keep learning
+                        Get unlimited hearts
                     </Button>
                     <Button
                         className="w-full"
-                        variant="dangerOutline"
+                        variant="primaryOutline"
                         size="lg"
-                        onClick={handleClick}
+                        onClick={close}
                     >
-                        End session
+                        No thanks
                     </Button>
                 </DialogFooter>
             </DialogContent>

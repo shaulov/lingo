@@ -6,10 +6,11 @@ import {toast} from "sonner";
 import {challengeOptions, challenges} from "@/db/schema";
 import {upsertChallengeProgress} from "@/actions/challenge-progress";
 import {reduceHearts} from "@/actions/user-progress";
+import {useHeartsModal} from "@/hooks/use-hearts-modal";
 import {Header} from "./header";
 import {QuestionBubble} from "./question-bubble";
 import {Challenge} from "./challenge";
-import {FinishQuiz} from "@/app/lesson/components/finish-quiz";
+import {FinishQuiz} from "./finish-quiz";
 import {Footer} from "./footer";
 import {
     ChallengeTypes,
@@ -39,6 +40,8 @@ export function Quiz({
     initialPercentage,
     userSubscription,
 }: Props) {
+    const { open: openHeartsModal } = useHeartsModal();
+
     const router = useRouter();
 
     const correctAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -58,8 +61,6 @@ export function Quiz({
     const options = challenge?.challengeOptions ?? [];
     const title = challenge?.type === ChallengeTypes.Assist ? "Select the correct meaning" : challenge?.question;
     const score = challenges.length * DEFAULT_ADDING_POINTS;
-
-    console.log(challenge);
 
     const handleNext = () => {
         setActiveIndex(current => current + 1);
@@ -99,7 +100,7 @@ export function Quiz({
                 upsertChallengeProgress(challenge.id)
                     .then(response => {
                         if (response?.error === ErrorMessages.Hearts) {
-                            console.error("Missing hearts");
+                            openHeartsModal();
                             return;
                         }
 
@@ -123,7 +124,7 @@ export function Quiz({
                reduceHearts(challenge.id)
                    .then(response => {
                        if (response?.error === ErrorMessages.Hearts) {
-                           console.error("Missing hearts");
+                           openHeartsModal();
                            return;
                        }
 
