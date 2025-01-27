@@ -3,10 +3,12 @@
 import {useState, useTransition, useRef} from "react";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
+import {useMount} from "react-use";
 import {challengeOptions, challenges} from "@/db/schema";
 import {upsertChallengeProgress} from "@/actions/challenge-progress";
 import {reduceHearts} from "@/actions/user-progress";
 import {useHeartsModal} from "@/hooks/use-hearts-modal";
+import {usePracticeModal} from "@/hooks/use-practice-modal";
 import {Header} from "./header";
 import {QuestionBubble} from "./question-bubble";
 import {Challenge} from "./challenge";
@@ -41,6 +43,13 @@ export function Quiz({
     userSubscription,
 }: Props) {
     const { open: openHeartsModal } = useHeartsModal();
+    const { open: openPracticeModal } = usePracticeModal();
+
+    useMount(() => {
+        if (initialPercentage === 100) {
+            openPracticeModal();
+        }
+    })
 
     const router = useRouter();
 
@@ -49,7 +58,9 @@ export function Quiz({
     const [isPending, startTransition] = useTransition();
 
     const [hearts, setHearts] = useState(initialHearts);
-    const [percentage, setPercentage] = useState(initialPercentage);
+    const [percentage, setPercentage] = useState(() => {
+        return initialPercentage === 100 ? 0 : initialPercentage;
+    });
     const [activeIndex, setActiveIndex] = useState(() => {
         const uncompletedIndex = challenges.findIndex(challenge => !challenge.completed);
         return uncompletedIndex === -1 ? 0 : uncompletedIndex;

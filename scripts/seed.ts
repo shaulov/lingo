@@ -89,23 +89,23 @@ const main = async () => {
       {
         challengeId: 1,
         correct: true,
-        imageSrc: "images/lessons/man.svg",
+        imageSrc: "/images/lessons/man.svg",
         text: "el hombre",
-        audioSrc: "sounds/es_man.mp3",
+        audioSrc: "/sounds/es_man.mp3",
       },
       {
         challengeId: 1,
         correct: false,
-        imageSrc: "images/lessons/woman.svg",
+        imageSrc: "/images/lessons/woman.svg",
         text: "la mujer",
-        audioSrc: "sounds/es_woman.mp3",
+        audioSrc: "/sounds/es_woman.mp3",
       },
       {
         challengeId: 1,
         correct: false,
-        imageSrc: "images/lessons/robot.svg",
+        imageSrc: "/images/lessons/robot.svg",
         text: "el robot",
-        audioSrc: "sounds/es_robot.mp3",
+        audioSrc: "/sounds/es_robot.mp3",
       },
     ]);
 
@@ -114,19 +114,19 @@ const main = async () => {
         challengeId: 2,
         correct: true,
         text: "el hombre",
-        audioSrc: "sounds/es_man.mp3",
+        audioSrc: "/sounds/es_man.mp3",
       },
       {
         challengeId: 2,
         correct: false,
         text: "la mujer",
-        audioSrc: "sounds/es_woman.mp3",
+        audioSrc: "/sounds/es_woman.mp3",
       },
       {
         challengeId: 2,
         correct: false,
         text: "el robot",
-        audioSrc: "sounds/es_robot.mp3",
+        audioSrc: "/sounds/es_robot.mp3",
       },
     ]);
 
@@ -134,23 +134,23 @@ const main = async () => {
       {
         challengeId: 3,
         correct: false,
-        imageSrc: "images/lessons/man.svg",
+        imageSrc: "/images/lessons/man.svg",
         text: "el hombre",
-        audioSrc: "sounds/es_man.mp3",
+        audioSrc: "/sounds/es_man.mp3",
       },
       {
         challengeId: 3,
         correct: true,
-        imageSrc: "images/lessons/woman.svg",
+        imageSrc: "/images/lessons/woman.svg",
         text: "la mujer",
-        audioSrc: "sounds/es_woman.mp3",
+        audioSrc: "/sounds/es_woman.mp3",
       },
       {
         challengeId: 3,
         correct: false,
-        imageSrc: "images/lessons/robot.svg",
+        imageSrc: "/images/lessons/robot.svg",
         text: "el robot",
-        audioSrc: "sounds/es_robot.mp3",
+        audioSrc: "/sounds/es_robot.mp3",
       },
     ]);
 
