@@ -5,7 +5,7 @@ import db from "@/db/drizzle";
 import { courses, units, userProgress, challengeProgress, lessons } from "@/db/schema";
 
 export const getUserProgress = cache(async () => {
-  const { userId } = await auth();
+  const { userId } = auth();
 
   if (!userId) return null;
 
@@ -20,7 +20,7 @@ export const getUserProgress = cache(async () => {
 });
 
 export const getUnits = cache(async () => {
-  const { userId } = await auth();
+  const { userId } = auth();
   const userProgress = await getUserProgress();
 
   if (!userId || !userProgress?.activeCourse) {
@@ -70,7 +70,7 @@ export const getUnits = cache(async () => {
 });
 
 export const getChallengeProgress = cache(async () => {
-  const { userId } = await auth();
+  const { userId } = auth();
 
   if (!userId) return null;
 
@@ -99,7 +99,7 @@ export const getCourseById = cache(async (courseId: number) => {
 });
 
 export const getCourseProgress = cache(async () => {
-  const { userId } = await auth();
+  const { userId } = auth();
   const userProgress = await getUserProgress();
 
   if (!userId || !userProgress?.activeCourseId) {
@@ -143,7 +143,7 @@ export const getCourseProgress = cache(async () => {
 });
 
 export const getLesson = cache(async (id?: number) => {
-  const { userId } = await auth();
+  const { userId } = auth();
 
   if (!userId) return null;
 
