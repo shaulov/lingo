@@ -1,0 +1,47 @@
+import {redirect} from "next/navigation";
+import Image from "next/image";
+import {getUserProgress} from "@/db/queries";
+import {StickyWrapper} from "@/components/sticky-wrapper";
+import {FeedWrapper} from "@/components/feed-wrapper";
+import {UserProgress} from "@/components/user-progress";
+import {Items} from "./components/items";
+import {AppRoutes} from "@/const";
+
+export default async function ShopPage() {
+    const userProgressData = getUserProgress();
+    const [userProgress] = await Promise.all([userProgressData]);
+
+    if (!userProgress || !userProgress.activeCourse) {
+        redirect(AppRoutes.Courses);
+    }
+
+    return (
+        <section className="flex flex-row-reverse gap-[48px] px-6">
+            <StickyWrapper>
+                <UserProgress
+                    activeCourse={userProgress.activeCourse}
+                    hearts={userProgress.hearts}
+                    points={userProgress.points}
+                    hasActiveSubscription={false}
+                />
+            </StickyWrapper>
+            <FeedWrapper>
+                <div className="flex flex-col items-center w-full">
+                    <Image
+                        src="/images/icons/shop.svg"
+                        height={90}
+                        width={90}
+                        alt="Shop"
+                    />
+                    <h1 className="my-6 text-center font-bold text-neutral-800 text-2xl">Shop</h1>
+                    <p className="mb-6 text-muted-foreground text-center text-lg">Spend your points on cool stuff.</p>
+                    <Items
+                        hearts={userProgress.hearts}
+                        points={userProgress.points}
+                        hasActiveSubscription={false}
+                    />
+                </div>
+            </FeedWrapper>
+        </section>
+    );
+}
