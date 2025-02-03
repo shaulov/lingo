@@ -47,6 +47,7 @@ export const DEFAULT_ADDING_POINTS = 10;
 export const CYCLE_LENGTH = 8;
 export const RIGHT_INDENT_CONST = 40;
 export const POINTS_TO_REFILL = 10;
+export const DAY_IN_MS = 86_400_000;
 
 export enum ChallengeTypes {
 	Assist = 'ASSIST',
