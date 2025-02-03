@@ -4,6 +4,7 @@ import {useTransition} from "react";
 import Image from "next/image";
 import {toast} from "sonner";
 import {refillHearts} from "@/actions/user-progress";
+import {createStripeUrl} from "@/actions/user-subscription";
 import {Button} from "@/components/ui/button";
 import {DEFAULT_HEART_COUNT, POINTS_TO_REFILL} from "@/const";
 
@@ -26,18 +27,37 @@ export function Items({ hearts, points, hasActiveSubscription }: Props) {
         });
     };
 
+    const handleUpgrade = () => {
+        startTransition(() => {
+            createStripeUrl()
+                .then(response => {
+                    if (response.data) {
+                        window.location.href = response.data;
+                    }
+                })
+                .catch((err) => {toast.error(err.message)});
+        });
+    }
+
     return (
         <ul className="w-full">
             <li className="flex items-center gap-x-4 w-full p-4 border-t-2">
-                <Image src="/images/icons/heart.svg" width={60} height={60} alt="Heart" />
+                <Image src="/images/icons/heart.svg" width={60} height={60} alt="Heart"/>
                 <p className="flex-1 text-neutral-700 text-base lg:text-xl font-bold">Refill hearts</p>
                 <Button disabled={isDisabled} onClick={handleRefillHearts}>
-                    {hearts === DEFAULT_HEART_COUNT ? <span>full</span>: (
+                    {hearts === DEFAULT_HEART_COUNT ? <span>full</span> : (
                         <div className="flex items-center">
-                            <Image src="/images/icons/points.svg" width={20} height={20} alt="Points" />
+                            <Image src="/images/icons/points.svg" width={20} height={20} alt="Points"/>
                             <p>{POINTS_TO_REFILL}</p>
                         </div>
                     )}
+                </Button>
+            </li>
+            <li className="flex items-center gap-x-4 w-full p-4 pt-8 border-t-2">
+                <Image src="/images/icons/unlimited.svg" width={60} height={60} alt="Unlimited hearts"/>
+                <p className="flex-1 text-neutral-700 text-base lg:text-xl font-bold">Unlimited hearts</p>
+                <Button disabled={pending} onClick={handleUpgrade}>
+                    {hasActiveSubscription ? "settings" : "upgrade"}
                 </Button>
             </li>
         </ul>
