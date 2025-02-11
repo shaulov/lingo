@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import db from "@/db/drizzle";
 import {courses, units, userProgress, challengeProgress, lessons, userSubscription} from "@/db/schema";
-import {DAY_IN_MS} from "@/const";
+import {DAY_IN_MS, TOP_USERS_COUNT} from "@/const";
 
 export const getUserProgress = cache(async () => {
   const { userId } = auth();
@@ -222,4 +222,23 @@ export const getUserSubscription = cache(async () => {
     ...data,
     isActive: Boolean(isActive),
   };
+});
+
+export const getTopUsers = cache(async () => {
+  const { userId } = auth();
+
+  if (!userId) return [];
+
+  const data = await db.query.userProgress.findMany({
+    orderBy: (userProgress, { desc }) => [desc(userProgress.points)],
+    limit: TOP_USERS_COUNT,
+    columns: {
+      userId: true,
+      userName: true,
+      userImageSrc: true,
+      points: true,
+    },
+  });
+
+  return data;
 });

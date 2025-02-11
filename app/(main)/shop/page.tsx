@@ -20,15 +20,7 @@ export default async function ShopPage() {
     }
 
     return (
-        <section className="flex flex-row-reverse gap-[48px] px-6">
-            <StickyWrapper>
-                <UserProgress
-                    activeCourse={userProgress.activeCourse}
-                    hearts={userProgress.hearts}
-                    points={userProgress.points}
-                    hasActiveSubscription={isPro}
-                />
-            </StickyWrapper>
+        <section className="flex gap-[48px] px-6">
             <FeedWrapper>
                 <div className="flex flex-col items-center w-full">
                     <Image
@@ -46,6 +38,14 @@ export default async function ShopPage() {
                     />
                 </div>
             </FeedWrapper>
+            <StickyWrapper>
+                <UserProgress
+                    activeCourse={userProgress.activeCourse}
+                    hearts={userProgress.hearts}
+                    points={userProgress.points}
+                    hasActiveSubscription={isPro}
+                />
+            </StickyWrapper>
         </section>
     );
 }
