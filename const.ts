@@ -57,6 +57,7 @@ export enum ChallengeTypes {
 export enum ErrorMessages {
 	Hearts = 'hearts',
 	Practice = 'practice',
+	Subscription = 'subscription',
 }
 
 export enum QuizStatuses {

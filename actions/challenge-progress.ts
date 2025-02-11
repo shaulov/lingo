@@ -5,7 +5,7 @@ import {auth} from "@clerk/nextjs";
 import {eq, and} from "drizzle-orm";
 import db from "@/db/drizzle";
 import {challengeProgress, challenges, userProgress} from "@/db/schema";
-import {getUserProgress} from "@/db/queries";
+import {getUserProgress, getUserSubscription} from "@/db/queries";
 import {AppRoutes, DEFAULT_HEART_COUNT, DEFAULT_ADDING_POINTS, ErrorMessages} from "@/const";
 
 const revalidatePaths = (lessonId: number) => {
@@ -22,7 +22,7 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     if (!userId) throw new Error("Unauthorized");
 
     const currentUserProgress = await getUserProgress();
-    // TODO: handle subscription query later
+    const userSubscription = await getUserSubscription();
 
     if (!currentUserProgress) throw new Error("User progress not found");
 
@@ -42,8 +42,7 @@ export const upsertChallengeProgress = async (challengeId: number) => {
 
     const isPractice = !!existingChallengeProgress;
 
-    // TODO add condition for subscription
-    if (currentUserProgress.hearts === 0 && !isPractice) {
+    if (currentUserProgress.hearts === 0 && !isPractice && !userSubscription?.isActive) {
         return { error: ErrorMessages.Hearts }
     }
 

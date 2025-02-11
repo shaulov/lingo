@@ -4,7 +4,7 @@ import {useState, useTransition, useRef} from "react";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
 import {useMount} from "react-use";
-import {challengeOptions, challenges} from "@/db/schema";
+import {challengeOptions, challenges, userSubscription} from "@/db/schema";
 import {upsertChallengeProgress} from "@/actions/challenge-progress";
 import {reduceHearts} from "@/actions/user-progress";
 import {useHeartsModal} from "@/hooks/use-hearts-modal";
@@ -32,7 +32,9 @@ type Props = {
     })[];
     initialHearts: number;
     initialPercentage: number;
-    userSubscription: any; // TODO: replace with subscription DB type
+    userSubscription: (typeof userSubscription.$inferSelect & {
+        isActive?: boolean;
+    }) | null
 };
 
 export function Quiz({
