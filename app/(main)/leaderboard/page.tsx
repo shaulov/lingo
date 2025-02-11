@@ -6,6 +6,8 @@ import {Avatar, AvatarImage} from "@/components/ui/avatar";
 import {StickyWrapper} from "@/components/sticky-wrapper";
 import {FeedWrapper} from "@/components/feed-wrapper";
 import {UserProgress} from "@/components/user-progress";
+import {Promo} from "@/components/promo";
+import {Quests} from "@/components/quests";
 import {AppRoutes} from "@/const";
 
 export default async function LeaderboardPage() {
@@ -63,6 +65,10 @@ export default async function LeaderboardPage() {
                     points={userProgress.points}
                     hasActiveSubscription={isPro}
                 />
+                {!isPro && (
+                    <Promo />
+                )}
+                <Quests points={userProgress.points} />
             </StickyWrapper>
         </section>
     );

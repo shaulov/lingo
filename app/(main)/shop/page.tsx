@@ -4,6 +4,8 @@ import {getUserProgress, getUserSubscription} from "@/db/queries";
 import {StickyWrapper} from "@/components/sticky-wrapper";
 import {FeedWrapper} from "@/components/feed-wrapper";
 import {UserProgress} from "@/components/user-progress";
+import {Promo} from "@/components/promo";
+import {Quests} from "@/components/quests";
 import {Items} from "./components/items";
 import {AppRoutes} from "@/const";
 
@@ -45,6 +47,10 @@ export default async function ShopPage() {
                     points={userProgress.points}
                     hasActiveSubscription={isPro}
                 />
+                {!isPro && (
+                    <Promo />
+                )}
+                <Quests points={userProgress.points} />
             </StickyWrapper>
         </section>
     );

@@ -3,6 +3,8 @@ import {getUnits, getUserProgress, getCourseProgress, getLessonPercentage, getUs
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { UserProgress } from "@/components/user-progress";
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 import { Header } from "./components/header";
 import { Unit } from "./components/unit";
 import { AppRoutes } from "@/const";
@@ -63,6 +65,10 @@ export default async function LearnPage() {
           points={userProgress.points}
           hasActiveSubscription={isPro}
         />
+        {!isPro && (
+            <Promo />
+        )}
+        <Quests points={userProgress.points} />
       </StickyWrapper>
     </section>
   );

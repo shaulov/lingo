@@ -5,6 +5,7 @@ import {Progress} from "@/components/ui/progress";
 import {StickyWrapper} from "@/components/sticky-wrapper";
 import {FeedWrapper} from "@/components/feed-wrapper";
 import {UserProgress} from "@/components/user-progress";
+import {Promo} from "@/components/promo";
 import {AppRoutes, quests} from "@/const";
 
 export default async function QuestsPage() {
@@ -62,6 +63,9 @@ export default async function QuestsPage() {
                     points={userProgress.points}
                     hasActiveSubscription={isPro}
                 />
+                {!isPro && (
+                    <Promo />
+                )}
             </StickyWrapper>
         </section>
     );
